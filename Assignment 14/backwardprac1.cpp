@@ -1,28 +1,27 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-
 vector<vector<string>>prem;
 vector<string>conc;
-unordered_map<string,bool>visiting;
+unordered_map<string,bool>visited;
 unordered_map<string,bool>mp;
 
 bool solve(string goal)
 {
+
     if(mp[goal])
     return true;
 
-    if(visiting[goal])
+    if(visited[goal])
     return false;
 
-    visiting[goal]=true;
+    visited[goal]=true;
 
     for(int i=0;i<conc.size();i++)
     {
         if(conc[i]==goal)
         {
             bool ok=true;
-
             for(auto &p:prem[i])
             {
                 if(!solve(p))
@@ -38,7 +37,7 @@ bool solve(string goal)
             }
         }
     }
-    return false;
+    return true;
 }
 
 int main()
@@ -48,13 +47,11 @@ int main()
     cin>>n;
     prem.resize(n);
     conc.resize(n);
-
+    cout<<"Enter the rules in the format k A B ..";
     for(int i=0;i<n;i++)
     {
-        cout<<"Enter the rules in format k A B ..."<<endl;
         int k;
         cin>>k;
-
         prem[i].resize(k);
         for(int j=0;j<k;j++)
         {
@@ -63,10 +60,11 @@ int main()
         }
         cin>>conc[i];
         mp[conc[i]]=false;
-    }
-    int f;
+    }   
     cout<<"Enter the number of facts"<<endl;
+    int f;
     cin>>f;
+    cout<<"Enter the facts"<<endl;
     for(int i=0;i<f;i++)
     {
         string x;
@@ -74,13 +72,14 @@ int main()
         mp[x]=true;
     }
     string query;
-    cout<<"Enter the query"<<endl;
+    cout<<"Enter the query to be checked"<<endl;
     cin>>query;
 
-    if(solve(query))
+    bool res=solve(query);
+
+    if(res)
     cout<<"TRUE"<<endl;
     else
     cout<<"FALSE"<<endl;
-
     return 0;
 }
