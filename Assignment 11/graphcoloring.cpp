@@ -55,17 +55,13 @@ bool solve(vector<string>& vars,int i)
 
     for(auto c:domain[v])
     {
-        bool ok=true;
+        auto backup=domain[v];
+        domain[v]={c};
 
-        if(ok)
-        {
-            auto backup=domain[v];
-            domain[v]={c};
+        if(AC3() && solve(vars,i+1)) return true;
 
-            if(AC3() && solve(vars,i+1)) return true;
-
-            domain[v]=backup;
-        }
+        domain[v]=backup;
+        
     }
     return false;
 }
